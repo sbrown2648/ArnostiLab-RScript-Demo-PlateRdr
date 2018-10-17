@@ -9,6 +9,8 @@ RawDir <- "raw-for-rates"
 master <- "Plate_RatesGF_EN584.csv"
 #where is your time sampled/elapsed time info stored?
 timesheet <- "PlateTimesheet_EN584.csv"
+#the relative path to the reference file that contains the seawater volumes filtered for your GF filters
+vol.filt <- "reference-files/VolumesFilteredEN584_plate_GF.csv"
 #name of folder you want your output visualizations to be in
 pngDir <- "flvstime-png"
 #do you want to output a visualization of fluorescence over time for each plate? (it will take longer to run but is still reasonably fast)
@@ -32,7 +34,12 @@ library(XLConnect)
 #define color palette for flvstime plots
 substrateColors <- brewer.pal(n=7,name="Dark2")
 
-vol_filt <- read.csv("VolumesFilteredEN584_plate_GF.csv",header=TRUE,row.names="id")
+if (file.exists(pngDir)) {
+} else {
+    dir.create(pngDir)
+}
+
+vol_filt <- read.csv(vol.filt,header=TRUE,row.names="id")
 
 #Read in PlateMaster and PlateTimesheet need to record calculations and calculate rates, etc.
 #Define colClasses to be TimeSampled=POSIXct and ElapsedTime=numeric(?); may need use strptime

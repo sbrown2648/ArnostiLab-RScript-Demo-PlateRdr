@@ -26,6 +26,10 @@ library(RColorBrewer)
 #define color palette for flvstime plots
 substrateColors <- brewer.pal(n=7,name="Dark2")
 
+if (file.exists(pngDir)) {
+} else {
+    dir.create(pngDir)
+}
 
 #Read in PlateMaster and PlateTimesheet need to record calculations and calculate rates, etc.
 #Define colClasses to be TimeSampled=POSIXct and ElapsedTime=numeric(?); may need use strptime

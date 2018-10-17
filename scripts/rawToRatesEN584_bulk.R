@@ -27,6 +27,10 @@ library(XLConnect)
 #define color palette for flvstime plots
 substrateColors <- brewer.pal(n=7,name="Dark2")
 
+if (file.exists(pngDir)) {
+} else {
+    dir.create(pngDir)
+}
 
 #Read in PlateMaster and PlateTimesheet need to record calculations and calculate rates, etc.
 #Define colClasses to be TimeSampled=POSIXct and ElapsedTime=numeric(?); may need use strptime
@@ -126,8 +130,8 @@ for (inc in 1:length(ExptList)) {
         plateMasterBulk <- rbind(plateMasterBulk, newrow)
         
         #insert fl.change.kc into flchange.list so can plot 
-        fl.change.kc$mean <- rowMeans(fl.change.kc[,grep("live",colnames(fl.change.kc))])
-        fl.change.kc$sd <- apply(fl.change.kc[,grep("live",colnames(fl.change.kc))],1,sd)
+        fl.change.kc$mean <- rowMeans(fl.change.kc[,grep("rep",colnames(fl.change.kc))])
+        fl.change.kc$sd <- apply(fl.change.kc[,grep("rep",colnames(fl.change.kc))],1,sd)
         flchange.list[[substrate]] <- fl.change.kc
     }
     if (savepng==TRUE) {

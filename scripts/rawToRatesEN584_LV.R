@@ -1,7 +1,7 @@
 ##rawToRatesLV
 
 #takes .raw LV files from plate reader, processes them to plot FL change over time (saves as png), 
-#calculates rate and stores in plateRatesMasterBulk/LV/GF.csv
+#calculates rate and stores in plateRatesMasterLV/.csv
 
 #Where are your data files
 RawDir <- "raw-for-rates"
@@ -23,6 +23,7 @@ library(ggplot2)
 library(reshape2)
 library(plyr)
 library(RColorBrewer)
+library(XLConnect)
 #define color palette for flvstime plots
 substrateColors <- brewer.pal(n=7,name="Dark2")
 
@@ -122,6 +123,9 @@ for (inc in 1:length(ExptList)) {
                 #divide max slopes by m.muf or m.mca (depending on substrate) to get rates
                 m.fluorophore <- stdslopes[[names(fl.list[substrate])]]
                 ratesdf <- slopedf/m.fluorophore
+                
+                #any rates below zero change to zero
+                ratesdf[ratesdf<0]=0
                 
                 #find mean rate of all timepoints, record as avg_potential_rate; potential_sd
                 avg <- rowMeans(ratesdf[title,grep("rate",colnames(ratesdf))])
